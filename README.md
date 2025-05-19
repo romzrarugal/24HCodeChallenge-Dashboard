@@ -1,59 +1,59 @@
-# 24HCodeChallengeDashboard
+# 🍕 Pizza Sales Dashboard (Angular)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.12.
+This is a frontend web application built with **Angular 19** and **ng-bootstrap**, designed to visualize pizza sales data such as total revenue, quantity sold, and monthly trends.
 
-## Development server
+This project was developed as part of a **24-hour coding challenge**, focusing on fast delivery, clarity, and clean architecture for a single-developer use case.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🚀 Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Pizza summary table with pagination, sorting, and search
+- Filter pizzas by ingredients (multi-select)
+- Charts displaying monthly total sales and quantity sold
+- Toggle between summary and detailed insights per pizza
+- Fast and responsive UI built with Bootstrap & Chart.js
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🧱 Tech Stack
 
-```bash
-ng generate component component-name
-```
+- Angular 19
+- ng-bootstrap (UI components)
+- Chart.js (for data visualization)
+- RxJS
+- TypeScript
+- CSS / Bootstrap
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 🧪 Getting Started
+### 1. Prerequisites
+- Node.js v18+
 
-## Building
+- Angular CLI v17+
 
-To build the project run:
+### 2. Install Dependencies
 
-```bash
-ng build
-```
+- npm install
+### 3. Run Locally
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- ng serve
+### 4. Then open your browser to:
+- http://localhost:4200
 
-## Running unit tests
+## 🧠 Design Notes
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- Server-side pagination, filtering, and sorting were implemented to keep things fast and scalable on the backend. This helped reduce the complexity needed on the frontend while still handling large data sets efficiently.
 
-```bash
-ng test
-```
+- Since this was built within a 24-hour timeframe, I prioritized speed and clarity over long-term structure. That’s why I used a simple folder layout (`/models`, `/services`, `/pages`) instead of a more feature-based or enterprise-scaled architecture.
 
-## Running end-to-end tests
+I understand this approach isn’t ideal for larger or long-term team projects. That said, I’m always open to learning and adapting to best practices. Given more time or team collaboration, I can easily shift toward scalable patterns like shared modules, feature folders, or state management libraries like NgRx. 
 
-For end-to-end (e2e) testing, run:
+This project reflects how I work under pressure, balancing clean code with rapid delivery while still keeping maintainability in mind.
 
-```bash
-ng e2e
-```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## ✅ Final Notes:
 
-## Additional Resources
+###  👉 Backend Repo: https://github.com/romzrarugal/24HCodeChallenge.API
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
