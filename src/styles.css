@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+.mw-300 {
+  max-width: 300px;
+  width: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

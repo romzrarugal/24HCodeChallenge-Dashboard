@@ -1,0 +1,156 @@
+<h2 class="fw-bold">Pizza Sales Summary</h2>
+
+<div class="container-fluid mb-3" *ngIf="!isLoading">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <!-- Search (Left-aligned) -->
+    <div class="mw-300">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        (keydown.enter)="onEnterSearch()"
+      />
+    </div>
+
+    <!-- Multi-Select Filter (Right-aligned) -->
+    <div class="mw-300">
+      <ng-select
+        [items]="allIngredients"
+        [multiple]="true"
+        bindLabel=""
+        [(ngModel)]="selectedIngredients"
+        (ngModelChange)="onIngredientChange()"
+        [searchable]="true"
+        [clearable]="true"
+        placeholder="Show pizzas WITHOUT..."
+        appendTo="body"
+        class="w-100"
+        [closeOnSelect]="false"
+      >
+        <ng-template ng-option-tmp let-item="item">
+          <span
+            class="me-2 fw-bold"
+            [ngClass]="{ 'text-danger': selectedIngredients.includes(item) }">
+            {{ selectedIngredients.includes(item) ? '✖' : '' }}
+          </span>
+          {{ item }}
+        </ng-template>
+      </ng-select>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center py-5">
+  <div class="spinner-border text-primary custom-spinner" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<table class="table table-bordered table-striped" *ngIf="!isLoading">
+<thead class="table-dark">
+  <tr>
+    <th>#</th>
+    <th (click)="setSort('name')" class="cursor-pointer">
+      Name
+      <span *ngIf="sortColumn === 'name'">
+        {{ sortDirection === 'asc' ? '▲' : '▼' }}
+      </span>
+    </th>
+    <th (click)="setSort('category')" class="cursor-pointer">
+      Category
+      <span *ngIf="sortColumn === 'category'">
+        {{ sortDirection === 'asc' ? '▲' : '▼' }}
+      </span>
+    </th>
+    <th>Ingredients</th>
+    <th (click)="setSort('quantitySold')" class="cursor-pointer">
+      Quantity Sold
+      <span *ngIf="sortColumn === 'quantitySold'">
+        {{ sortDirection === 'asc' ? '▲' : '▼' }}
+      </span>
+    </th>
+    <th (click)="setSort('totalSales')" class="cursor-pointer">
+      Total Sales
+      <span *ngIf="sortColumn === 'totalSales'">
+        {{ sortDirection === 'asc' ? '▲' : '▼' }}
+      </span>
+    </th>
+    <th>Details</th>
+  </tr>
+</thead>
+  <tbody>
+    <ng-container *ngFor="let pizza of pizzas; let i = index">
+      <tr>
+        <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+        <td>{{ pizza.name }}</td>
+        <td>{{ pizza.category }}</td>
+        <td>{{ pizza.ingredients }}</td>
+        <td>{{ pizza.quantitySold }}</td>
+        <td>${{ pizza.totalSales | number:'1.0-2' }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="toggleDetails(i)">
+            {{ expandedIndex === i ? 'Hide' : 'Insight' }}
+          </button>
+        </td>
+
+      </tr>
+      <tr *ngIf="isExpanded(i)">
+        <td colspan="6" class="bg-light px-4 py-4">
+          <div *ngIf="pizza.insight; else loadingInsight" class="d-flex flex-wrap gap-4 justify-content-between chart-wrapper">
+            <!-- Bar Chart -->
+            <div class="size-chart-wrapper">
+              <strong class="d-block mb-2">Sales per Size</strong>
+              <canvas baseChart [data]="getBarChartData(pizza)" [type]="'bar'"
+                [options]="{ responsive: true, maintainAspectRatio: false }"></canvas>
+            </div>
+
+            <!-- Monthly Sales Line Chart -->
+            <div class="monthly-chart-wrapper">
+              <strong class="d-block mb-2">Monthly Sales</strong>
+              <canvas baseChart [data]="getLineChartData(pizza)" [type]="'line'"
+                [options]="{ responsive: true, maintainAspectRatio: false }"></canvas>
+            </div>
+          </div>
+
+          <!-- Quantity Chart -->
+          <div *ngIf="pizza.insight" class="pt-5 mb-2 quantity-chart-wrapper">
+            <strong class="d-block text-center mb-2">Quantity Sold per Month</strong>
+            <canvas baseChart [data]="getQuantityLineChartData(pizza)" [type]="'line'" [options]="{
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: { display: true, text: 'Quantity Sold' }
+                }
+              }
+            }"></canvas>
+          </div>
+
+          <ng-template #loadingInsight>
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading insight...</span>
+              </div>
+            </div>
+          </ng-template>
+        </td>
+      </tr>
+
+    </ng-container>
+  </tbody>
+</table>
+
+<nav class="d-flex justify-content-center mt-4" *ngIf="!isLoading">
+  <ngb-pagination
+    [(page)]="page"
+    (pageChange)="loadPizzas()"
+    [pageSize]="pageSize"
+    [collectionSize]="totalCount"
+    [boundaryLinks]="true"
+    [maxSize]="4"
+  ></ngb-pagination>
+</nav>

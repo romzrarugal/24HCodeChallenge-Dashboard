@@ -1,0 +1,66 @@
+<div class="mb-4">
+  <h2 class="fw-bold">Pizza Sales Dashboard</h2>
+  <p class="text-muted">This data reflects records from <strong>2015</strong> to present.</p>
+</div>
+<div *ngIf="isSummaryLoading" class="text-center py-5">
+  <div class="spinner-border text-primary" role="status"></div>
+</div>
+
+<div *ngIf="!isSummaryLoading">
+
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow p-3">
+        <h5>Total Sales</h5>
+        <p class="fs-4 text-success">${{ summary.totalSales | number:'1.2-2' }}</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow p-3">
+        <h5>Total Pizzas Sold</h5>
+        <p class="fs-4">{{ summary.totalQuantitySold | number}}</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow p-3">
+        <h5>Total Orders</h5>
+        <p class="fs-4">{{ summary.totalOrders | number}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow p-3">
+    <h5>Best Sellers per Category</h5>
+    <ul class="list-group mt-3">
+      <li class="list-group-item" *ngFor="let item of summary?.bestSellers">
+        <strong>{{ item.category }}</strong>: {{ item.pizzaName }}
+        ({{ item.quantitySold }} sold – ${{ item.totalSales | number:'1.2-2' }})
+      </li>
+    </ul>
+  </div>
+</div>
+<div *ngIf="isChartLoading" class="text-center py-5">
+  <div class="spinner-border text-primary" role="status"></div>
+</div>
+<div *ngIf="!isChartLoading && chartData.length">
+  <div class="card shadow p-4">
+    <h5 class="mb-3">Category Breakdown </h5>
+
+    <div class="mb-3">
+      <label class="form-label">Select Category:</label>
+      <select class="form-select" [(ngModel)]="selectedCategoryIndex" (change)="updateCombinedPieChart()">
+        <option *ngFor="let category of chartData; let i = index" [value]="i">
+          {{ category.category }}
+        </option>
+      </select>
+    </div>
+
+   <canvas baseChart
+      [data]="combinedPieChartData"
+      [type]="'pie'"
+      [options]="combinedPieChartOptions"
+      [plugins]="[ChartDataLabels]"
+      style="max-height: 400px;">
+    </canvas>
+  </div>
+</div>
