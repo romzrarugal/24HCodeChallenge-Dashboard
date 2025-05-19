@@ -1,0 +1,24 @@
+.chart-wrapper {
+  align-items: flex-start;
+}
+
+.size-chart-wrapper {
+  flex: 1 1 400px;
+  height: 260px;
+}
+
+.monthly-chart-wrapper {
+  flex: 1 1 600px;
+  height: 260px;
+}
+
+.quantity-chart-wrapper {
+  width: 700px;
+  margin: 0 auto;
+  height: 260px;
+}
+
+.custom-spinner {
+  width: 3rem;
+  height: 3rem;
+}
